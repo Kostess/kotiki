@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Информация о коте</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Информация о коте</h2>
+    <div class="space-y-4">
+        <div class="flex items-center space-x-4">
+            <img src="{{data.image}}" alt="Кот" class="w-24 h-24 rounded-full object-cover">
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">{{data.name}}</h3>
+                <p class="text-gray-600">Порода: {{data.breed}}</p>
+                <p class="text-gray-600">Возраст: {{data.age}} года</p>
+                <p class="text-gray-600">Пол: {{data.sex}}</p>
+            </div>
+        </div>
+        <div>
+            <p class="text-gray-700">Мурзик — очень ласковый и игривый кот. Он обожает играть с мячиками и ловить летающих насекомых. Его пушистая шерсть всегда выглядит великолепно, а глаза как два бирюзовых самоцвета.</p>
+        </div>
+        <div class="flex justify-between items-center">
+            <a href="/" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                Вернуться
+            </a>
+            {{#if this.isHome}}
+                <p class="block mt-4 text-center bg-gray-500 text-white py-2 px-4 rounded-lg">Уже дома</p>
+            {{else}}
+                <a href="/reqAdminAdd?reqIndex={{@index}}" class="block mt-4 text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                Хочу забрать
+                </a>
+            {{/if}}
+        </div>
+    </div>
+</div>
+</body>
+</html>

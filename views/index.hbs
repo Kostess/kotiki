@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск дома для котиков</title>
+    <link href="style/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- Header -->
+<header class="bg-blue-600 text-white py-4">
+    <div class="container mx-auto px-4">
+        <h1 class="text-2xl font-bold">Поиск дома для котиков</h1>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold mb-6">Доступные котики</h2>
+
+    <div class="mt-5 mb-3 flex gap-4 text-xl">
+        <a href="/filter?isHouse=0" class="block hover:underline">Ищут дом</a>
+        <a href="/filter?isHouse=1" class="block hover:underline">Уже дома</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {{#each data}}
+            <div>
+                <a href="/cat?catID={{@index}}" class="block bg-white rounded-lg shadow-lg overflow-hidden"></div>
+            </div>
+
+        {{/each}}
+    </div>
+
+    <hr>
+    <a class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Карточки котиков -->
+        {{#each data}}
+            <a href="/cat?catID={{@index}}" class="block bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="{{this.image}}" alt="Котик {{@index}}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold mb-2">{{this.name}}</h3>
+                    <p class="text-gray-700"><strong>Пол:</strong> {{this.sex}}</p>
+                    <p class="text-gray-700"><strong>Порода:</strong> {{this.breed}}</p>
+                    <p class="text-gray-700"><strong>Возраст:</strong> {{this.age}}</p>
+                    {{#if this.isHome}}
+                        <p class="block mt-4 text-center bg-gray-500 text-white py-2 px-4 rounded-lg">Уже дома</p>
+                    {{else}}
+                        <a href="/reqAdminAdd?reqIndex={{@index}}" class="block mt-4 text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                            Хочу забрать
+                        </a>
+                    {{/if}}
+                </div>
+            </a>
+        {{/each}}
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto px-4 text-center">
+        <p>&copy; 2024 Поиск дома для котиков. Все права защищены.</p>
+    </div>
+</footer>
+
+</body>
+</html>
