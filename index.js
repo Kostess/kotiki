@@ -14,6 +14,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 const hbs = require('hbs');
+const {da} = require("@faker-js/faker");
 
 app.set('views', 'views')
 app.set('view engine', 'hbs')
@@ -34,36 +35,57 @@ for (let i = 0; i < 15; i++) {
     })
 }
 
+// Поиск кота по id
+const findCatById = (id) => {
+    return data.find(cat => cat.id === id);
+}
+
+// Главная страница
 app.get('/', (req, res) => {
     res.render('index', {
         data: data,
+        title: "Поиск дома для котиков"
     });
 })
 
+// Фильтрация на главной странице
 app.get(`/filter`, (req, res) => {
-    const isHouse = Boolean(Number(req.query.isHouse));
-    res.render('index', {
-        data: data.filter((e) => {
-            return e.isHome === isHouse;
-        }),
-    })
+    const house = Number(req.query.isHouse);
+    if (house === 2) {
+        res.render('index', {
+            data: data,
+            title: "Поиск дома для котиков"
+        });
+    }
+    else {
+        const isHouse = Boolean(house)
+        res.render('index', {
+            data: data.filter((e) => {
+                return e.isHome === isHouse;
+            }),
+            title: "Поиск дома для котиков"
+        })
+    }
 })
 
+// Обработка запроса "Хочу забрать"
 app.get(`/reqAdminAdd`, (req, res) => {
     const reqIndex = req.query.reqIndex;
-    data[reqIndex].isReq = true;
+    const cat = findCatById(reqIndex)
+    cat.isReq = true;
 
-    res.render('index', {
-        data: data
-    })
+    res.redirect(`/`);
 })
 
+// Админ панель
 app.get('/admin', (req, res) => {
     res.render('admin', {
         data: data,
+        title: "Админ панель"
     })
 })
 
+// Фильтрация в админ панели
 app.post('/filterAdmin', (req, res) => {
     const { name, sex, breed, age } = req.body;
 
@@ -74,23 +96,30 @@ app.post('/filterAdmin', (req, res) => {
             (!age || cat.age == age);
     });
 
-    res.render('admin', { data: filteredCats });
+    res.render('admin', {
+        data: filteredCats,
+        title: "Админ панель"
+    });
 });
 
+// Подтверждение запроса в админ панели
 app.get('/confirm', (req, res) => {
     const reqIndex = req.query.reqIndex;
-    data[reqIndex].isReq = false;
-    data[reqIndex].isHome = true;
+    const cat = findCatById(reqIndex)
+    cat.isReq = false;
+    cat.isHome = true;
 
-    res.render('admin', {
-        data: data,
+    res.redirect(`/admin`);
+})
+
+// Форма добавления кота
+app.get(`/add-cat`, (req, res) => {
+    res.render('add-cat', {
+        title: "Добавить кота"
     })
 })
 
-app.get(`/add-cat`, (req, res) => {
-    res.render('add-cat')
-})
-
+// Обработка запроса на добавление кота
 app.post(`/addCatRequest`, (req, res) => {
     const {image, name, sex, breed, age, description} = req.body;
 
@@ -109,11 +138,23 @@ app.post(`/addCatRequest`, (req, res) => {
     res.redirect(`/admin`)
 })
 
+// Подробная информация о коте
 app.get(`/cat`, (req, res) => {
-    const cat = Number(req.query.catID);
+    const catID = req.query.catID;
 
+    const cat = findCatById(catID);
     res.render('cat', {
-        data: data[cat],
-        dataID: cat,
+        data: cat,
+        title: `Информация о ${cat.sex === "male"? "коте": "кошке"}`
     })
+
+})
+
+// Удаление кота
+app.get('/delete', (req, res) => {
+    const reqIndex = req.query.reqIndex;
+    const cat = findCatById(reqIndex)
+
+    data.splice(data.indexOf(cat), 1);
+    res.redirect(`/admin`);
 })

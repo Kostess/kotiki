@@ -2,105 +2,115 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
     <link href="style/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans">
-    <!-- Header -->
-    <header class="bg-blue-600 text-white py-4">
-        <div class="container mx-auto px-4">
-            <h1 class="text-2xl font-bold">Поиск дома для котиков</h1>
+<!-- Header -->
+<header class="bg-blue-600 text-white py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Поиск дома для котиков</h1>
+        <a href="/" class="bg-white text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100">Вернуться</a>
+    </div>
+</header>
+
+<!-- Основное содержимое -->
+<main class="container mx-auto p-4">
+    <!-- Форма сортировки -->
+    <form id="sort-form" class="mb-4" action="/filterAdmin" method="post">
+        <div class="flex space-x-4">
+            <label class="block">
+                <span class="text-gray-700">Имя:</span>
+                <input type="text" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </label>
+            <label class="block">
+                <span class="text-gray-700">Пол:</span>
+                <div class="mt-1 space-x-2">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="sex" value="male" class="form-radio text-blue-600">
+                        <span class="ml-2">Мужской</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="sex" value="female" class="form-radio text-blue-600">
+                        <span class="ml-2">Женский</span>
+                    </label>
+                </div>
+            </label>
+            <label class="block">
+                <span class="text-gray-700">Порода:</span>
+                <input type="text" name="breed" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </label>
+            <label class="block">
+                <span class="text-gray-700">Возраст:</span>
+                <input type="number" name="age" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </label>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out">
+                <i class="fas fa-filter mr-2"></i> Фильтровать
+            </button>
         </div>
-    </header>
+    </form>
 
-    <!-- Основное содержимое -->
-    <main class="container mx-auto p-4">
-        <!-- Форма сортировки -->
-        <form id="sort-form" class="mb-4" action="/filterAdmin" method="post">
-            <div class="flex space-x-4">
-                <label class="block">
-                    <span class="text-gray-700">Имя:</span>
-                    <input type="text" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </label>
-                <label class="block">
-                    <span class="text-gray-700">Пол:</span>
-                    <div class="mt-1 space-x-2">
-                        <label class="inline-flex items-center">
-                            <input type="radio" name="sex" value="male" class="form-radio">
-                            <span class="ml-2">Мужской</span>
-                        </label>
-                        <label class="inline-flex items-center">
-                            <input type="radio" name="sex" value="female" class="form-radio">
-                            <span class="ml-2">Женский</span>
-                        </label>
-                    </div>
-                </label>
-                <label class="block">
-                    <span class="text-gray-700">Порода:</span>
-                    <input type="text" name="breed" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </label>
-                <label class="block">
-                    <span class="text-gray-700">Возраст:</span>
-                    <input type="number" name="age" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </label>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Сортировать</button>
-            </div>
-        </form>
-
-        <!-- Таблица с данными -->
-        <table class="min-w-full bg-white shadow-md rounded-lg text-center">
-            <thead class="bg-gray-800 text-white">
-            <tr>
-                <th class="py-2 px-4">ID</th>
-                <th class="py-2 px-4">Изображение</th>
-                <th class="py-2 px-4">Имя</th>
-                <th class="py-2 px-4">Пол</th>
-                <th class="py-2 px-4">Порода</th>
-                <th class="py-2 px-4">Возраст</th>
-                <th class="py-2 px-4">Домашний?</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#each data}}
-                <tr class="border-b border-gray-200">
-                    <td class="py-2 px-4">{{@index}}</td>
-                    <td class="py-2 px-4"><img src="{{this.image}}" alt="cat" class="w-14 h-14 my-0 mx-auto rounded-full"></td>
-                    <td class="py-2 px-4">{{this.name}}</td>
-                    <td class="py-2 px-4">{{this.sex}}</td>
-                    <td class="py-2 px-4">{{this.breed}}</td>
-                    <td class="py-2 px-4">{{this.age}}</td>
-                    {{#if this.isReq}}
-                        <td class="py-2 px-4">
-                            <a href="/confirm?reqIndex={{@index}}" class="text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
-                                Подтвердить
-                            </a>
-                        </td>
+    <!-- Таблица с данными -->
+    <table class="min-w-full bg-white shadow-md rounded-lg text-center">
+        <thead class="bg-gray-800 text-white">
+        <tr>
+            <th class="py-2 px-4">ID</th>
+            <th class="py-2 px-4">Изображение</th>
+            <th class="py-2 px-4">Имя</th>
+            <th class="py-2 px-4">Пол</th>
+            <th class="py-2 px-4">Порода</th>
+            <th class="py-2 px-4">Возраст</th>
+            <th class="py-2 px-4">Домашний?</th>
+            <th class="py-2 px-4">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each data}}
+            <tr class="border-b border-gray-200 hover:bg-gray-100 transition duration-300 ease-in-out">
+                <td class="py-2 px-4">{{@index}}</td>
+                <td class="py-2 px-4"><img src="{{this.image}}" alt="cat" class="w-14 h-14 my-0 mx-auto rounded-full"></td>
+                <td class="py-2 px-4">{{this.name}}</td>
+                <td class="py-2 px-4">{{this.sex}}</td>
+                <td class="py-2 px-4">{{this.breed}}</td>
+                <td class="py-2 px-4">{{this.age}}</td>
+                {{#if this.isReq}}
+                    <td class="py-2 px-4">
+                        <a href="/confirm?reqIndex={{this.id}}" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out">
+                            <i class="fas fa-check mr-2"></i> Подтвердить
+                        </a>
+                    </td>
+                {{else}}
+                    {{#if this.isHome}}
+                        <td class="py-2 px-4 text-green-600">Да</td>
                     {{else}}
-                        {{#if this.isHome}}
-                            <td class="py-2 px-4">Да</td>
-                        {{else}}
-                            <td class="py-2 px-4">Нет</td>
-                        {{/if}}
+                        <td class="py-2 px-4 text-red-600">Нет</td>
                     {{/if}}
-                </tr>
-            {{/each}}
-            </tbody>
-        </table>
+                {{/if}}
+                <td class="py-2 px-4">
+                    <a href="/delete?reqIndex={{this.id}}" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 ease-in-out">
+                        <i class="fas fa-trash-alt mr-2"></i> Удалить
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
 
-        <!-- Ссылка на форму для добавления новых записей -->
-        <div class="mt-4">
-            <a href="/add-cat" class="bg-green-500 text-white px-4 py-2 rounded-md">Добавить нового кота</a>
-        </div>
-    </main>
+    <!-- Ссылка на форму для добавления новых записей -->
+    <div class="mt-4">
+        <a href="/add-cat" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-300 ease-in-out">
+            <i class="fas fa-plus mr-2"></i> Добавить нового кота
+        </a>
+    </div>
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2024 Поиск дома для котиков. Все права защищены.</p>
-        </div>
-    </footer>
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto px-4 text-center">
+        <p>&copy; 2024 Поиск дома для котиков. Все права защищены.</p>
+    </div>
+</footer>
 </body>
 </html>

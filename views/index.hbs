@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск дома для котиков</title>
+    <title>{{title}}</title>
     <link href="style/output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans">
 
 <!-- Header -->
 <header class="bg-blue-600 text-white py-4">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold">Поиск дома для котиков</h1>
+        <a href="/admin" class="bg-white text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100">Панель администратора</a>
     </div>
 </header>
 
@@ -22,37 +23,32 @@
     <div class="mt-5 mb-3 flex gap-4 text-xl">
         <a href="/filter?isHouse=0" class="block hover:underline">Ищут дом</a>
         <a href="/filter?isHouse=1" class="block hover:underline">Уже дома</a>
+        <a href="/filter?isHouse=2" class="block hover:underline">Показать всех</a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-3 gap-6">
         {{#each data}}
-            <div>
-                <a href="/cat?catID={{@index}}" class="block bg-white rounded-lg shadow-lg overflow-hidden"></div>
-            </div>
-
-        {{/each}}
-    </div>
-
-    <hr>
-    <a class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Карточки котиков -->
-        {{#each data}}
-            <a href="/cat?catID={{@index}}" class="block bg-white rounded-lg shadow-lg overflow-hidden">
-                <img src="{{this.image}}" alt="Котик {{@index}}" class="w-full h-48 object-cover">
+            <div class="block bg-white rounded-lg shadow-lg">
+                <img src="{{this.image}}" alt="Котик {{this.name}}" class="rounded-lg w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-bold mb-2">{{this.name}}</h3>
                     <p class="text-gray-700"><strong>Пол:</strong> {{this.sex}}</p>
                     <p class="text-gray-700"><strong>Порода:</strong> {{this.breed}}</p>
                     <p class="text-gray-700"><strong>Возраст:</strong> {{this.age}}</p>
+                </div>
+                <div class="flex justify-between items-center p-4 border-t border-gray-200">
                     {{#if this.isHome}}
-                        <p class="block mt-4 text-center bg-gray-500 text-white py-2 px-4 rounded-lg">Уже дома</p>
+                        <div class="text-center bg-gray-500 text-white py-2 px-4 rounded-lg">Уже дома</div>
                     {{else}}
-                        <a href="/reqAdminAdd?reqIndex={{@index}}" class="block mt-4 text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
-                            Хочу забрать
+                        <a class="block text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700" href="/reqAdminAdd?reqIndex={{this.id}}">
+                        Хочу забрать
                         </a>
                     {{/if}}
+                    <a href="/cat?catID={{this.id}}" class="block text-blue-600 font-medium hover:underline">
+                    Подробнее
+                    </a>
                 </div>
-            </a>
+            </div>
         {{/each}}
     </div>
 </main>
